@@ -5,21 +5,173 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="assets/css/keyboard.css" />
+
+    <link rel="stylesheet" href="assets/css/style.css" />
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
       integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
       crossorigin="anonymous"
     />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet">
 
     <title>UI Keyboard Demo</title>
   </head>
   <body>
-    <div id="keyboard">
-      <div id="shift" class="shift" onclick="swapCase()"><i class="fas fa-arrow-circle-up"></i></div>
-      <div id="space" class="space" onclick="printKey(' ')">space</div>
-      <div id="backspace" class="backspace"><i class="fas fa-backspace"></i></div>
+    <div class="container">
+      <div class="info">
+        <h1>A Simple Flex Letters Only Keyboard</h1>
+        <p>I built this keybord to solve a very simple but very annoying problem, viz. The OSX keyboard. I wanted a keyboard that could interact with my sites without taking up half of the screen.</p>
+        <p>
+          This fully implementable keyboard is responsive due to it's use of <span class="link">flexbox</span>. Further user customization is possible by
+          assigning styes to the <span class="code">.key</span> class. Furthermore, you can customize user interaction through the
+          <span class="code"> .key:pseudo</span> classes.
+        </p>
+        <p>The keyboard communicates directly with the DOM to simulate an <span class="code">'onkeyup'</span> event. 
+          You will need to provide a listener that captues the
+        <span class="code">'onkeyup'</span> event and reads a letter. 
+        <p>example js:
+        
+          <pre>
+
+  document.onkeyup = function(event){   <br>
+      var letter = event.key;           <br>
+      console.log(letter);              <br>
+  }
+          </pre>
+        </p>
+        <h2>How to implement this keyboard in your app</h2>
+        <hr />
+        <h3>1 - Link the stylesheet</h3>
+        <span class="link"> &lt;link rel="stylesheet" href="assets/css/keyboard.css" /></span>
+        <h3>2 - Link the javascript</h3>
+        
+        <span class="link">&lt;script src="assets/javascript/engine.js">&lt;/script></span>
+        <h3>3 - Add the keyboard to your html</h3>
+        <p>Include the keyboard <b>and</b> an element <span class="link">
+          &lt; div, button, icon etc. >
+        </span> in your html. In the example that follows I use a <a href="https://fontawesome.com/start">font awesome</a> icon.</a></p>
+        <pre>
+
+  &lt;body> <br>
+      '&lt;element id="keyboard-icon" onclick="doLayout()">&lt;/element>'    <br>
+      '&lt;div id="keyboard" class="flex-keyboard [key-order]">&lt;/div>' <br>
+  &lt;/body>
+        </pre>
+         <p class="link">[key-order] => 'qwerty' - for a classic US-English key ordering </p>
+          <p>If you do not include a <span class="link">key-order</span> class, the keyboard will default to alphabetic ordering</p>
+        <p><em>the current version of this UI-keyboard does not support a full keyboard layout. See the <a href="#coming-soon">coming soon</a> section for updates to come!</em></p>
+        <hr>
+        
+      </div>
+      <h2>An example of the default layout</h2>
+      <div class="flex-box">
+        <div class="padded-grid">
+            <div style="grid-column:cont; width:75vw;">
+              <textarea id="notepad"></textarea> 
+          Click to toggle the keyboard: 
+          <span style="display:flex; justify-content:space-around; padding: 5px; margin: 10px 10px; font-size:3em;">
+            <i id="keyboard-icon" class="fas fa-keyboard"  onclick="doLayout()"></i>
+            <button   onclick="clearPad()">Clear</button>
+          </span>
+          <div id="keyboard" class="flex-keyboard"></div>
+          </div>
+        </div>
+        <div>
+          <span class="code">the html</span><br>
+          <pre>
+
+  &lt;textarea id="notepad">&lt;/textarea> <br>
+  Click to toggle the keyboard: 
+  &lt;i id="keyboard-icon" ... onclick="doLayout()">&lt;/i>   <br>
+  &lt;button onclick="clearPad()">Clear&lt;/button> <br>
+  &lt;div id="keyboard" class="flex-keyboard">&lt;/div> <br>
+          </pre>
+        </div>
+      </div>
+      
+      <h2>An example of the 'qwerty' layout</h2>
+      <div class="flex-box">
+        <div class="padded-grid">
+            <div style="grid-column:cont; width:75vw;">
+          Click to toggle the keyboard: 
+          <span style="display:flex; justify-content:space-around; padding: 5px; margin: 10px 10px; font-size:3em;">
+            <i id="keyboard-icon" class="fas fa-keyboard"  onclick="doLayoutQ()"></i>
+            <button   onclick="clearPad()">Clear</button>
+          </span>
+          <div id="keyboardq" class="flex-keyboard qwerty"></div>
+          </div>
+        </div>
+        <div >
+          <span class="code">the html</span><br>
+          <pre>
+
+  &lt;textarea id="notepad">&lt;/textarea> <br>
+  Click to toggle the keyboard: 
+  &lt;i id="keyboard-icon" ... onclick="doLayout()">&lt;/i>   <br>
+  &lt;div id="keyboard" class="flex-keyboard qwerty">&lt;/div> <br>
+          </pre>
+        </div>
+      </div>
+      <div id="coming-soon">
+        <h3>Coming Soon</h3>
+        <ul>
+          <li>a numbers-only keypad</li>
+          <li>new styles</li>
+          <li>a full keyboard</li>
+          <li>improved functionality</li>
+          <li>a new website...I hope.</li>
+        </ul>
+      </div>
+      
     </div>
-    <script src="assets/javascript/engine.js" type="text/javascript"></script>
+
+    <script>
+      var pad = document.getElementById("notepad");
+
+      document.onkeyup = function(event) {
+        var letter = event.key;
+        var text = pad.textContent;
+        text = text + letter;
+        pad.textContent = text;
+      };
+
+      function clearPad() {
+        pad.textContent = "";
+      }
+      
+      var keyboardq = document.getElementById("keyboardq");
+            function doLayoutQ() {
+        if (keyboardq.classList.contains("qwerty")) {
+          keys = qwerty;
+        } else {
+          keys = alpha;
+        }
+        if (document.getElementById("keyboardq").children.length == 0) {
+          for (var i = 0; i < keys.length; i++) {
+            var key = document.createElement("div");
+            key.id = keys[i];
+            key.style.gridArea = keys[i];
+            key.textContent = keys[i];
+            key.className = "key";
+            key.onclick = function() {
+              var event_name = "keyup";
+              var event = document.createEvent("HTMLEvents");
+              event.initEvent(event_name, true, false);
+              event.key = this.id;
+              document.dispatchEvent(event);
+            };
+            keyboardq.appendChild(key);
+          }
+          return;
+        } else {
+          for (var i = 0; i < keys.length; i++) {
+            var key = document.getElementById([keys[i]]);
+            keyboardq.removeChild(key);
+          }
+        }
+      }
+    </script>
+    <script src="assets/javascript/engine.js"></script>
   </body>
 </html>
